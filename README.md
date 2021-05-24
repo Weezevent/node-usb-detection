@@ -1,13 +1,14 @@
 [![npm version](https://badge.fury.io/js/usb-detection.svg)](http://badge.fury.io/js/usb-detection) [![Gitter](https://badges.gitter.im/MadLittleMods/node-usb-detection.svg)](https://gitter.im/MadLittleMods/node-usb-detection?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+# fork from
+
+https://github.com/MadLittleMods/node-usb-detection
 
 # usb-detection
 
 `usb-detection` allows you to listen for insert/remove events of USB devices on your system.
 
-
 ### [Changelog](https://github.com/MadLittleMods/node-usb-detection/blob/master/CHANGELOG.md)
-
 
 # Install
 
@@ -30,46 +31,75 @@ See the [Electron docs for using native modules][electron-native-modules] to ens
 If you run into the following error, here are the exact steps you can use:
 
 ```
-detection.node was compiled against a different Node.js version using NODE_MODULE_VERSION 72. This version of Node.js requires NODE_MODULE_VERSION 80. Please try re-compiling or re-installing 
+detection.node was compiled against a different Node.js version using NODE_MODULE_VERSION 72. This version of Node.js requires NODE_MODULE_VERSION 80. Please try re-compiling or re-installing
 ```
 
- 1. `npm i electron-rebuild --save-dev`
- 1. `./node_modules/.bin/electron-rebuild`
-
+1.  `npm i electron-rebuild --save-dev`
+1.  `./node_modules/.bin/electron-rebuild`
 
 # Usage
 
 ```js
-var usbDetect = require('usb-detection');
+var usbDetect = require("usb-detection");
 
 usbDetect.startMonitoring();
 
 // Detect add/insert
-usbDetect.on('add', function(device) { console.log('add', device); });
-usbDetect.on('add:vid', function(device) { console.log('add', device); });
-usbDetect.on('add:vid:pid', function(device) { console.log('add', device); });
+usbDetect.on("add", function (device) {
+  console.log("add", device);
+});
+usbDetect.on("add:vid", function (device) {
+  console.log("add", device);
+});
+usbDetect.on("add:vid:pid", function (device) {
+  console.log("add", device);
+});
 
 // Detect remove
-usbDetect.on('remove', function(device) { console.log('remove', device); });
-usbDetect.on('remove:vid', function(device) { console.log('remove', device); });
-usbDetect.on('remove:vid:pid', function(device) { console.log('remove', device); });
+usbDetect.on("remove", function (device) {
+  console.log("remove", device);
+});
+usbDetect.on("remove:vid", function (device) {
+  console.log("remove", device);
+});
+usbDetect.on("remove:vid:pid", function (device) {
+  console.log("remove", device);
+});
 
 // Detect add or remove (change)
-usbDetect.on('change', function(device) { console.log('change', device); });
-usbDetect.on('change:vid', function(device) { console.log('change', device); });
-usbDetect.on('change:vid:pid', function(device) { console.log('change', device); });
+usbDetect.on("change", function (device) {
+  console.log("change", device);
+});
+usbDetect.on("change:vid", function (device) {
+  console.log("change", device);
+});
+usbDetect.on("change:vid:pid", function (device) {
+  console.log("change", device);
+});
 
 // Get a list of USB devices on your system, optionally filtered by `vid` or `pid`
-usbDetect.find(function(err, devices) { console.log('find', devices, err); });
-usbDetect.find(vid, function(err, devices) { console.log('find', devices, err); });
-usbDetect.find(vid, pid, function(err, devices) { console.log('find', devices, err); });
+usbDetect.find(function (err, devices) {
+  console.log("find", devices, err);
+});
+usbDetect.find(vid, function (err, devices) {
+  console.log("find", devices, err);
+});
+usbDetect.find(vid, pid, function (err, devices) {
+  console.log("find", devices, err);
+});
 // Promise version of `find`:
-usbDetect.find().then(function(devices) { console.log(devices); }).catch(function(err) { console.log(err); });
+usbDetect
+  .find()
+  .then(function (devices) {
+    console.log(devices);
+  })
+  .catch(function (err) {
+    console.log(err);
+  });
 
 // Allow the process to exit
 //usbDetect.stopMonitoring()
 ```
-
 
 # API
 
@@ -77,36 +107,33 @@ usbDetect.find().then(function(devices) { console.log(devices); }).catch(functio
 
 Start listening for USB add/remove/change events. This will cause the Node.js process to stay open until you call `usbDetect.stopMonitoring()` (see below).
 
-
 ## `usbDetect.stopMonitoring()`
 
 Stop listening for USB add/remove/change events. This will also allow the Node.js process to exit.
 
 This is really only meant to be called once on exit. No guarantees if you start/stop monitoring multiple times, see https://github.com/MadLittleMods/node-usb-detection/issues/53
 
-
 ## `usbDetect.on(eventName, callback)`
 
- - `eventName`
-    - `add`: also aliased as `insert`
-       - `add:vid`
-       - `add:vid:pid`
-    - `remove`
-       - `remove:vid`
-       - `remove:vid:pid`
-    - `change`
-       - `change:vid`
-       - `change:vid:pid`
- - `callback`: Function that is called whenever the event occurs
-    - Takes a `device`
-
+- `eventName`
+  - `add`: also aliased as `insert`
+    - `add:vid`
+    - `add:vid:pid`
+  - `remove`
+    - `remove:vid`
+    - `remove:vid:pid`
+  - `change`
+    - `change:vid`
+    - `change:vid:pid`
+- `callback`: Function that is called whenever the event occurs
+  - Takes a `device`
 
 ```js
-var usbDetect = require('usb-detection');
+var usbDetect = require("usb-detection");
 usbDetect.startMonitoring();
 
-usbDetect.on('add', function(device) {
-	console.log(device);
+usbDetect.on("add", function (device) {
+  console.log(device);
 });
 
 /* Console output:
@@ -122,32 +149,30 @@ usbDetect.on('add', function(device) {
 */
 ```
 
-
 ## `usbDetect.find(vid, pid, callback)`
 
 **Note:** All `find` calls return a promise even with the node-style callback flavors.
 
- - `find()`
- - `find(vid)`
- - `find(vid, pid)`
- - `find(callback)`
- - `find(vid, callback)`
- - `find(vid, pid, callback)`
+- `find()`
+- `find(vid)`
+- `find(vid, pid)`
+- `find(callback)`
+- `find(vid, callback)`
+- `find(vid, pid, callback)`
 
 Parameters:
 
- - `vid`: restrict search to a certain vendor id
- - `pid`: restrict search to s certain product id
- - `callback`: Function that is called whenever the event occurs
-    - Takes a `err` and `devices` parameter.
-
+- `vid`: restrict search to a certain vendor id
+- `pid`: restrict search to s certain product id
+- `callback`: Function that is called whenever the event occurs
+  - Takes a `err` and `devices` parameter.
 
 ```js
-var usbDetect = require('usb-detection');
+var usbDetect = require("usb-detection");
 usbDetect.startMonitoring();
 
-usbDetect.find(function(err, devices) {
-	console.log(devices, err);
+usbDetect.find(function (err, devices) {
+  console.log(devices, err);
 });
 // Equivalent to:
 //		usbDetect.find().then(function(devices) { console.log(devices); }).catch(function(err) { console.log(err); });
@@ -176,15 +201,12 @@ usbDetect.find(function(err, devices) {
 */
 ```
 
-
-
-
 # FAQ
 
 ### The script/process is not exiting/quiting
 
 ```js
-var usbDetect = require('usb-detection');
+var usbDetect = require("usb-detection");
 
 // Do some detection
 usbDetect.startMonitoring();
@@ -196,7 +218,6 @@ usbDetect.stopMonitoring();
 ### `usbDetect.find()` always returns the same list of devices, even after removal.
 
 Make sure you call `usbDetect.startMonitoring()` before any calls to `usbDetect.find()`.
-
 
 ### `npm run rebuild` -> `The system cannot find the path specified.`
 
@@ -216,38 +237,33 @@ If you already have Python 3 installed, you can install Python 2 alongside and
 create a symlink called `python2.exe` via `mklink "C:\Python27\python2.exe" "C:\Python27\python.exe"`
 and add the directory to your path.
 
-
 ### To build a debug version with error outputs use:
 
 ```sh
 $ npm run rebuild --debug
 ```
 
-
 # Development (compile from source)
 
 This assumes you also have everything on your system necessary to compile ANY native module for Node.js. This may not be the case, though, so please ensure the following requirements are satisfied before filing an issue about "Does not install". For all operating systems, please ensure you have Python 2.x installed AND not 3.0, [node-gyp](https://github.com/TooTallNate/node-gyp) (what we use to compile) requires Python 2.x.
 
-
 ### Windows:
 
- - Visual Studio 2013/2015 Community
- - Visual Studio 2010
- - Visual C++ Build Tools 2015: https://github.com/nodejs/node-gyp/issues/629#issuecomment-153196245
+- Visual Studio 2013/2015 Community
+- Visual Studio 2010
+- Visual C++ Build Tools 2015: https://github.com/nodejs/node-gyp/issues/629#issuecomment-153196245
 
 If you are having problems building, [please read this](https://github.com/TooTallNate/node-gyp/issues/44).
-
 
 ### Mac OS X:
 
 Ensure that you have at a minimum, the xCode Command Line Tools installed appropriate for your system configuration. If you recently upgraded your OS, it probably removed your installation of Command Line Tools, please verify before submitting a ticket.
 
-
 ### Linux:
 
 You know what you need for you system, basically your appropriate analog of build-essential. Keep rocking!
 
-To compile and install native addons from npm you may also need to install build tools *([source](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager#debian-and-ubuntu-based-linux-distributions))*:
+To compile and install native addons from npm you may also need to install build tools _([source](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager#debian-and-ubuntu-based-linux-distributions))_:
 
 ```sh
 sudo apt-get install -y build-essential
@@ -258,8 +274,6 @@ Also install libudev:
 ```sh
 sudo apt-get install libudev-dev
 ```
-
-
 
 # Testing
 

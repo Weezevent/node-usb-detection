@@ -168,7 +168,9 @@ static ListResultItem_t* GetProperties(struct udev_device* dev, ListResultItem_t
 	}
 	item->vendorId = strtol(udev_device_get_sysattr_value(dev,"idVendor"), NULL, 16);
 	item->productId = strtol(udev_device_get_sysattr_value(dev,"idProduct"), NULL, 16);
-	item->deviceAddress = 0;
+	if (udev_device_get_sysattr_value(dev, "devnum") != NULL) {
+		item->deviceAddress = strtol(udev_device_get_sysattr_value(dev, "devnum"), NULL, 16);
+	}
 	item->locationId = 0;
 
 	return item;
@@ -317,7 +319,9 @@ static void BuildInitialDeviceList() {
 		if(udev_device_get_sysattr_value(dev,"serial") != NULL) {
 			item->deviceParams.serialNumber = udev_device_get_sysattr_value(dev, "serial");
 		}
-		item->deviceParams.deviceAddress = 0;
+		if(udev_device_get_sysattr_value(dev, "devnum") != NULL) {
+			item->deviceParams.deviceAddress = strtol(udev_device_get_sysattr_value(dev, "devnum"), NULL, 16);
+		}
 		item->deviceParams.locationId = 0;
 
 		item->deviceState = DeviceState_Connect;
